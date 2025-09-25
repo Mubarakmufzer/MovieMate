@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 function AddContent() {
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     title: '',
     director: '',
@@ -13,6 +15,14 @@ function AddContent() {
     episodes_watched: 0,
   });
 
+  useEffect(() => {
+    if (id) {
+      axios.get(`http://localhost:8000/api/content/${id}/`)
+        .then(response => setFormData(response.data))
+        .catch(error => console.error('Error fetching content:', error));
+    }
+  }, [id]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -20,16 +30,21 @@ function AddContent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8000/api/content/', formData);
-      alert('Content added successfully!');
+      if (id) {
+        await axios.put(`http://localhost:8000/api/content/${id}/`, formData);
+        alert('Content updated successfully!');
+      } else {
+        await axios.post('http://localhost:8000/api/content/', formData);
+        alert('Content added successfully!');
+      }
     } catch (error) {
-      console.error('Error adding content:', error);
+      console.error('Error saving content:', error);
     }
   };
 
   return (
     <div className="max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Add Movie/TV Show</h2>
+      <h2 className="text-2xl font-bold mb-4">{id ? 'Update' : 'Add'} Movie/TV Show</h2>
       <div className="space-y-4">
         <input
           type="text"
@@ -106,7 +121,7 @@ function AddContent() {
           onClick={handleSubmit}
           className="w-full bg-blue-600 text-white p-2 rounded"
         >
-          Add Content
+          {id ? 'Update' : 'Add'} Content
         </button>
       </div>
     </div>
