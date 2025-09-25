@@ -4,6 +4,7 @@ import axios from 'axios';
 function RatingReview({ contentId }) {
   const [rating, setRating] = useState('');
   const [review, setReview] = useState('');
+  const [summary, setSummary] = useState('');
 
   const handleRatingSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +26,9 @@ function RatingReview({ contentId }) {
         content: contentId,
         text: review,
       });
+      // Generate simple summary
+      const words = review.split(' ').slice(0, 10).join(' ');
+      setSummary(`Summary: ${words}...`);
       alert('Review submitted!');
     } catch (error) {
       console.error('Error submitting review:', error);
@@ -60,6 +64,7 @@ function RatingReview({ contentId }) {
         >
           Submit Review
         </button>
+        {summary && <p className="mt-2">{summary}</p>}
       </div>
     </div>
   );
