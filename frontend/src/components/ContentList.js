@@ -1,24 +1,31 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import RatingReview from './RatingReview';
 
 function ContentList() {
   const [content, setContent] = useState([]);
   const [filter, setFilter] = useState({ genre: '', platform: '', status: '' });
   const [sort, setSort] = useState('title');
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/content/');
-        setContent(response.data);
-      } catch (error) {
-        console.error('Error fetching content:', error);
-      }
-    };
     fetchContent();
   }, []);
+
+  const fetchContent = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get('http://localhost:8000/api/content/');
+      setContent(response.data);
+    } catch (error) {
+      console.error('Error fetching content:', error);
+      setError('Failed to load content. Please check your connection or try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFilterChange = (e) => {
     setFilter({ ...filter, [e.target.name]: e.target.value });
@@ -29,12 +36,15 @@ function ContentList() {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:8000/api/content/${id}/`);
-      setContent(content.filter((item) => item.id !== id));
-      alert('Content deleted!');
-    } catch (error) {
-      console.error('Error deleting content:', error);
+    if (window.confirm('Are you sure you want to delete this content?')) {
+      try {
+        await axios.delete(`http://localhost:8000/api/content/${id}/`);
+        setContent(content.filter((item) => item.id !== id));
+        alert('Content deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting content:', error);
+        setError('Failed to delete content. Please try again.');
+      }
     }
   };
 
@@ -54,8 +64,10 @@ function ContentList() {
     });
 
   return (
-    <div>
+    <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Content List</h2>
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {loading && <p className="text-gray-500 mb-4">Loading...</p>}
       <div className="mb-4 space-y-2">
         <input
           type="text"
@@ -94,7 +106,16 @@ function ContentList() {
           <option value="genre">Sort by Genre</option>
           <option value="platform">Sort by Platform</option>
         </select>
+        <button
+          onClick={fetchContent}
+          className="w-full bg-green-500 text-white p-2 rounded mt-2"
+        >
+          Refresh Content
+        </button>
       </div>
+      {filteredContent.length === 0 && !loading && !error && (
+        <p className="text-gray-500">No content available. Add some via the Add Content page!</p>
+      )}
       <ul className="space-y-4">
         {filteredContent.map((item) => (
           <li key={item.id} className="p-4 bg-white rounded shadow">
@@ -123,7 +144,6 @@ function ContentList() {
                 Delete
               </button>
             </div>
-            <RatingReview contentId={item.id} />
           </li>
         ))}
       </ul>

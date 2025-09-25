@@ -20,7 +20,8 @@ class Content(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     total_episodes = models.IntegerField(null=True, blank=True)  # For TV shows
     episodes_watched = models.IntegerField(default=0)  # For TV shows
-    
+    rating = models.FloatField(null=True, blank=True, help_text="Rating out of 5")  # New field
+    review = models.TextField(null=True, blank=True)    
     def __str__(self):
         return self.title
 
