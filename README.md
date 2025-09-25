@@ -1,6 +1,6 @@
 # MovieMate
 
-MovieMate is a web application designed to help you track and manage your movie and TV show watchlist, ratings, and reviews. Built with Django for the backend and React for the frontend, it offers a user-friendly interface to add, update, rate, and get personalized recommendations for your content.
+MovieMate is a web application designed to help you track and manage your movie and TV show watchlist, ratings, and reviews. Built with Django for the backend and React for the frontend, it offers a user-friendly interface to add, update, rate, and review.
 
 ## Setup Steps
 
@@ -43,9 +43,7 @@ MovieMate is a web application designed to help you track and manage your movie 
 - Rate content on a 0-5 scale.
 - Add and manage reviews for movies or TV shows.
 
-- **Recommendations**
-- Get personalized movie recommendations based on ratings (shows wishlist movies with ratings 3.5-5 from top-rated genres).
-- Fallback to recent wishlist movies if no rated content matches.
+- 
 
 - **User Interface**
 - Responsive and clean design.
@@ -53,4 +51,4 @@ MovieMate is a web application designed to help you track and manage your movie 
 - Dedicated recommendations page.
 
 - **API Support**
-- RESTful API endpoints for managing content, ratings, reviews, and recommendations.   
+- RESTful API endpoints for managing content, ratings, reviews. 
