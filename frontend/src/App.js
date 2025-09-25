@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './components/Home';
 import AddContent from './components/AddContent';
 import ContentList from './components/ContentList';
-import Recommendations from './components/Recommendations';
 
 function App() {
   return (
@@ -13,7 +12,7 @@ function App() {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/add">Add Content</Link></li>
             <li><Link to="/list">Content List</Link></li>
-            <li><Link to="/recommendations">Recommendations</Link></li>
+            
           </ul>
         </nav>
         <div className="container mx-auto p-4">
@@ -22,7 +21,7 @@ function App() {
             <Route path="/add" element={<AddContent />} />
             <Route path="/add/:id" element={<AddContent />} />
             <Route path="/list" element={<ContentList />} />
-            <Route path="/recommendations" element={<Recommendations />} />
+           
           </Routes>
         </div>
       </div>

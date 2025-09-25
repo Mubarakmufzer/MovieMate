@@ -27,7 +27,7 @@ function RatingReview({ contentId }) {
         text: review,
       });
       // Generate simple summary
-      const words = review.split(' ').slice(0, 10).join(' ');
+      const words = review.split(' ').slice(0, 5).join(' ');
       setSummary(`Summary: ${words}...`);
       alert('Review submitted!');
     } catch (error) {
@@ -43,7 +43,7 @@ function RatingReview({ contentId }) {
           type="number"
           value={rating}
           onChange={(e) => setRating(e.target.value)}
-          placeholder="Rating (1-10)"
+          placeholder="Rating (1-5)"
           className="w-full p-2 border rounded"
         />
         <button

@@ -14,7 +14,7 @@ function AddContent() {
     status: 'wishlist',
     total_episodes: '',
     episodes_watched: 0,
-    rating: '',  // Added back
+    rating: '',  // 0-5 scale
     review: '',  // Added back
   });
 
